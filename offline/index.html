@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Offline Emotion Visualization</title>
+    <!-- Include the ECharts file you just downloaded -->
+    <script src="echarts.js"></script>
+    <script src="FileSaver.js"></script>
+    <!-- <script src="https://unpkg.com/fflate"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fflate/umd/index.js"></script> -->
+    <!-- <script src="jszip.min.js"></script> -->
+    <!-- <script src="jszip_utils.js"></script> -->
+  </head>
+  <body>
+    <!-- Prepare a DOM with a defined width and height for ECharts -->
+    <div id="top_container" style="display: flex;">
+      <div id="button_container" style="display:flex;flex-direction: column;align-items: center">
+        <label for="file_selector" style="cursor: pointer;width:100px;height:100px;">
+          <img src="open_icon_raw.png" alt="" />
+        </label>
+        <input type="file" accept="*/*" id="file_selector" multiple="multiple" style="opacity: 0;position: absolute;z-index: -1;"/>
+        
+        <label for="threshold_input" style="margin-top:20px;">lower y limit</label>
+        <input type="text" id="threshold_input" value="0.0" style="width: 30px;"/>
+        <!-- <a href="recorded.zip" download="recorded.zip">download recorded</a> -->
+        <!-- <input type="button" id="sync_to_video" value="Sync to video" command="sync_to_video" style="margin-top: 50px;"/> -->
+      </div>
+      <div id="lineplot" style="width: 900px; height:400px;"></div>
+    </div>
+    <div id="bottom_container" style="display: flex">
+      <div id="plot_container" style="position:relative; width: 400px; height:400px;">
+        <div id="heatmap" style="width: 400px; height:400px;"></div>
+        <div id="dotplot" style="position:absolute; left:0; top:0; height:400px; width:400px;"></div>
+        <div id="plot_circle" style="position:absolute; left:40px; top: 40px; height: 320px; width:320px;">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path id="outer_circle" fill="none" stroke="green" stroke-width="0.5px"
+                  d="M 50 0 A 50 50 180 0 1 100 50 A 50 50 0 0 1 50 100 A 50 50 0 0 1 0 50 A 50 50 0 0 1 50 0"/>
+          </svg>
+        </div>
+      </div>
+      <video controls id="video_player" style="width:600px">
+        <source id="video_source" src="">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <script type="text/javascript" src="./data_generator.js"></script>
+    <script type="text/javascript" src="./emo_converter.js"></script>
+    <script type="text/javascript" src="./heatmap.js"></script>
+    <script type="text/javascript" src="./dotplot.js"></script>
+    <script type="text/javascript" src="./lineplot.js"></script>
+    <script type="text/javascript" src="./video.js"></script>
+    <!-- <script type="text/javascript" src="./video_data_raw.js"></script> -->
+    <!-- <script type="text/javascript" src="./generate_recorded.js"></script> -->
+    <script type="text/javascript">
+      // Initialize the echarts instance based on the prepared dom
+      var chart_heatmap = echarts.init(document.getElementById('heatmap'));
+      chart_heatmap.setOption(option_heatmap);
+      var chart_dotplot = echarts.init(document.getElementById('dotplot'));
+      chart_dotplot.setOption(option_dotplot);
+      var chart_lineplot = echarts.init(document.getElementById('lineplot'));
+      chart_lineplot.setOption(option_lineplot);
+      chart_lineplot.on('dataZoom', on_zoom);
+      chart_lineplot.on('restore', on_restore);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   sodipodi:docname="angry.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.73851712"
+     inkscape:cx="379.13813"
+     inkscape:cy="561.93687"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#ff0000;stroke:#000000;stroke-width:6.06500013;stroke-dasharray:none;paint-order:markers fill stroke;fill-opacity:1"
+       id="path184"
+       cx="99.059708"
+       cy="145.27562"
+       r="70" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:5.98007;stroke-dasharray:none;paint-order:markers fill stroke"
+       d="M 87.017641,138.82692 C 59.153649,110.88236 59.153649,110.88236 59.153649,110.88236"
+       id="path1016" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:5.98007;stroke-dasharray:none;paint-order:markers fill stroke"
+       d="m 111.10177,138.82692 c 27.86399,-27.94456 27.86399,-27.94456 27.86399,-27.94456"
+       id="path1053" />
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:7.42118;stroke-dasharray:none;paint-order:markers fill stroke"
+       id="path4315"
+       sodipodi:type="arc"
+       sodipodi:cx="99.050003"
+       sodipodi:cy="-191.83711"
+       sodipodi:rx="42.671726"
+       sodipodi:ry="34.073414"
+       sodipodi:start="0"
+       sodipodi:end="3.1132976"
+       sodipodi:arc-type="arc"
+       d="m 141.72173,-191.83711 a 42.671726,34.073414 0 0 1 -42.068048,34.07 42.671726,34.073414 0 0 1 -43.258325,-33.10602"
+       sodipodi:open="true"
+       transform="scale(1,-1)" />
+  </g>
+</svg>

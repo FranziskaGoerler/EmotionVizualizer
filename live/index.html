@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Live Emotion Visualization</title>
+    <script src="echarts.js"></script>
+    <script src="FileSaver.js"></script>
+  </head>
+  <body>
+    <div id="container" style="display: flex;">
+      <div id="left_container" style="height:400px; width:400px;">
+        <div id="heatmap" style="position:absolute; left:0; top:0; height:400px; width:400px;"></div>
+        <div id="dotplot" style="position:absolute; left:0; top:0; height:400px; width:400px;"></div>
+        <div id="plot_circle" style="position: absolute; left:40px; top: 40px; height: 320px; width:320px;">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path id="outer_circle" fill="none" stroke="green" stroke-width="0.5px"
+                  d="M 50 0 A 50 50 180 0 1 100 50 A 50 50 0 0 1 50 100 A 50 50 0 0 1 0 50 A 50 50 0 0 1 50 0"/>
+          </svg>
+        </div>
+      </div>
+      <div id="right_container">
+        <div id="emoji" style="height:400px; width:250px;"></div>
+      </div>
+    </div>
+    <div id="lower" style="width:650px;height:50px;display:flex;flex-direction: column;align-items: center">
+      <label for="startstop" style="cursor: pointer;width:50px;height:50px;">
+          <svg viewBox="-5 -5 105 105" xmlns="http://www.w3.org/2000/svg">
+            <path id="outer_circle" fill="none" stroke="black" stroke-width="2px"
+                  d="M 50 0 A 50 50 180 0 1 100 50 A 50 50 0 0 1 50 100 A 50 50 0 0 1 0 50 A 50 50 0 0 1 50 0"/>
+            <path id="emoji_symbol" fill="yellow" stroke="black"
+                  d="M 50 10 A 40 40 0 0 1 50 90 A 40 40 0 0 1 50 10 M 25 43 L 36 25 L 47 43 M 53 43 L 64 25 L 75 43 M 75 60 A 20 13 0 0 1 25 60"/>
+            <path id="cross_line" fill="none" stroke="red" stroke-width="8px" visibility="hidden"
+                  d="M 17 17 L 83 83"/>  
+        </svg>
+      </label>
+      <input id="startstop" type="button" value="start/stop" style="opacity: 0;position: absolute;z-index: -1;"/>
+    </div>
+    <script type="text/javascript" src="./data_generator.js"></script>
+    <script type="text/javascript" src="./emo_converter.js"></script>
+    <script type="text/javascript" src="./heatmap.js"></script>
+    <script type="text/javascript" src="./dotplot.js"></script>
+    <script type="text/javascript" src="./emoji.js"></script>
+    <script type="text/javascript">
+      const length_emotions = 8;
+      const length_users = 1;
+      var running = false;
+
+      // Because we have no real time emotion detection we use emotions from file to simulate live visualization
+      var emo_data_loaded = [], av_data_loaded = [], loaded_data_len = 0;
+
+      var rawFile = new XMLHttpRequest();
+      rawFile.open("GET", './vector_emotion_data.txt', false);
+      rawFile.onreadystatechange = function ()
+      {
+          if(rawFile.readyState === 4)
+          {
+              if(rawFile.status === 200 || rawFile.status == 0)
+              {
+                  var json_str = rawFile.responseText;
+                  emo_data_loaded = JSON.parse(json_str);
+                  av_data_loaded = vectors_to_avs(emo_data_loaded);
+                  loaded_data_len = emo_data_loaded.length;
+              }
+          }
+      }
+      rawFile.send(null);
+
+      var chart_heatmap = echarts.init(document.getElementById('heatmap'));
+      chart_heatmap.setOption(option_heatmap);
+      var chart_dotplot = echarts.init(document.getElementById('dotplot'));
+      chart_dotplot.setOption(option_dotplot);
+      var chart_emoji = echarts.init(document.getElementById('emoji'));
+      chart_emoji.setOption(option_emoji);
+      var button = document.getElementById('startstop');
+      var cross_line = document.getElementById('cross_line');
+      const ts_start = window.performance.now()
+      var current_emotion_vector = [], current_emotion_av = [], current_index = 0, current_timestamp = '';
+      var timestamps = [];
+      function update_step() {
+          current_emotion_vector = emo_data_loaded[current_index % loaded_data_len];
+          current_emotion_av = av_data_loaded[current_index % loaded_data_len];
+          current_index++;
+          // current_emotion_vector = new EmotionVector(current_index, length_emotions, length_users);
+          // current_emotion_av = new EmotionAV(current_index, length_emotions, length_users);
+          var raw_seconds = (window.performance.now() - ts_start) / 1000;
+          console.log(raw_seconds);
+          minutes = Math.floor(raw_seconds / 60);
+          seconds = Math.round((raw_seconds % 60) * 100) / 100;
+          current_timestamp = minutes.toString() + ':' + seconds.toString();
+          console.log(current_timestamp);
+          timestamps.push(current_timestamp)
+      }
+      window.setInterval(function() {
+        if (running) {
+          update_step();
+          heatmap_update();
+          dotplot_update();
+          emoji_update();
+        }
+      }, 1000);
+      
+      function button_click(e) {
+        if (running) {
+          // stop and save files
+          running = false;
+          cross_line.setAttribute('visibility', 'hidden');
+
+          var timestamp_data_raw = JSON.stringify(timestamps);
+          var av_emotion_data_raw = JSON.stringify(av_data);
+          var vector_emotion_data_raw = JSON.stringify(emo_vector_data);
+
+          var blob = new Blob([timestamp_data_raw], {type: "text/plain;charset=utf-8"});
+          saveAs(blob, 'timestamps.txt');
+
+          var blob2 = new Blob([av_emotion_data_raw], {type: "text/plain;charset=utf-8"});
+          saveAs(blob2, 'av_emotion_data.txt');
+
+          var blob3 = new Blob([vector_emotion_data_raw], {type: "text/plain;charset=utf-8"});
+          saveAs(blob3, 'vector_emotion_data.txt');
+
+          //re-initialize everything
+          heatmap_reset();
+          dotplot_reset();
+          emoji_reset();
+        }
+        else {
+          // start
+          running = true;
+          cross_line.setAttribute('visibility', 'visible');
+        }
+      }
+
+      button.addEventListener('click', button_click);
+    </script>
+  </body>
+</html>
