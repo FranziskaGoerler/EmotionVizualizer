@@ -38,7 +38,7 @@ const emotion_colors = ['grey',
                         'yellow',
                         'blue',
                         '#3a4525ff', // brown green
-                        //'brown', 
+                        'brown', 
                         'red',
                         'purple'];
 const default_colors = ['#5470c6',   // mid blue
@@ -56,7 +56,7 @@ const emotion_names = ['Neutral',
                        'Happy',
                        'Sad',
                        'Disgust',
-                       //'Contempt',
+                       'Contempt',
                        'Angry',
                        'Fear'];
 // var emo_data_raw = data_emotion_vectors.map(x => x.user_emotions[0]);

@@ -49,7 +49,7 @@
       var emo_data_loaded = [], av_data_loaded = [], loaded_data_len = 0;
 
       var rawFile = new XMLHttpRequest();
-      rawFile.open("GET", './vector_emotion_data_20000.txt', false);
+      rawFile.open("GET", './vector_emotion_data.txt', false);
       rawFile.onreadystatechange = function ()
       {
           if(rawFile.readyState === 4)
@@ -100,7 +100,7 @@
           dotplot_update();
           emoji_update();
         }
-      }, 1000);
+      }, 1000/1.8);
       
       function button_click(e) {
         if (running) {

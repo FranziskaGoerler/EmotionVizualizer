@@ -45,7 +45,7 @@ function read_files(event) {
           // console.log(json_str);
           emo_data_raw = JSON.parse(json_str);
           av_data = vectors_to_avs(emo_data_raw);
-          x_ticks = generate_timestamp(emo_data_raw.length, 3)
+          x_ticks = generate_timestamp(emo_data_raw.length, 1.8)
           console.log(x_ticks)
           initialize_lineplot(); 
           initialize_heatmap();
