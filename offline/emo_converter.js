@@ -46,10 +46,21 @@ function vector_to_av(one_vector) {
 }
 
 function vectors_to_avs(emo_vector_data) {
-    var emo_av_data = []
+    var emo_av_data = [];
     for (vec of emo_vector_data) {
         var single_av = vector_to_av(vec);
         emo_av_data.push(single_av);
     }
-    return emo_av_data
+    return emo_av_data;
+}
+
+function generate_timestamp(n_timestamps, fps) {
+    var ts = [];
+    for (var i = 0; i < n_timestamps; i++) {
+        var seconds = Math.round((i/fps) * 100) / 100;
+        var minutes = Math.floor(seconds/60)
+        seconds = seconds % 60;
+        ts.push(minutes.toString() + ":" + seconds.toString())
+    }
+    return ts;
 }

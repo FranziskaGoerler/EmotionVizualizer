@@ -1,4 +1,5 @@
 const threshold_input = document.getElementById("threshold_input");
+const recalc = true;
 // const sync_to_video_button = document.getElementById("sync_to_video");
 
 threshold_input.addEventListener('input',  set_y_lower_limit)
@@ -37,7 +38,7 @@ const emotion_colors = ['grey',
                         'yellow',
                         'blue',
                         '#3a4525ff', // brown green
-                        'brown', 
+                        //'brown', 
                         'red',
                         'purple'];
 const default_colors = ['#5470c6',   // mid blue
@@ -55,7 +56,7 @@ const emotion_names = ['Neutral',
                        'Happy',
                        'Sad',
                        'Disgust',
-                       'Contempt',
+                       //'Contempt',
                        'Angry',
                        'Fear'];
 // var emo_data_raw = data_emotion_vectors.map(x => x.user_emotions[0]);
@@ -132,6 +133,7 @@ var option_lineplot = {
 function initialize_lineplot() {
   chart_lineplot.clear();
   if (emo_data_raw.length) {
+    console.log(emo_data_raw.length)
     n_emo = emo_data_raw[0].length;
     // const n_emo = 1;
     var n_frames = emo_data_raw.length;
@@ -139,7 +141,12 @@ function initialize_lineplot() {
     for (var e=0; e<n_emo; e++)
         emo_data.push(emo_data_raw.map(x => x[e]));
 
-    var emo_calc = re_calc_data(emo_data, 0, n_frames);
+    if (recalc) {
+      var emo_calc = re_calc_data(emo_data, 0, n_frames);
+    }
+    else 
+      var emo_calc = emo_data;
+
     x_width = n_frames;
 
     // console.log(emo_calc);

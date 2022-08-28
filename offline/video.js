@@ -45,6 +45,8 @@ function read_files(event) {
           // console.log(json_str);
           emo_data_raw = JSON.parse(json_str);
           av_data = vectors_to_avs(emo_data_raw);
+          x_ticks = generate_timestamp(emo_data_raw.length, 3)
+          console.log(x_ticks)
           initialize_lineplot(); 
           initialize_heatmap();
         }.bind(this)
@@ -113,15 +115,22 @@ function on_zoom() {
     var line_option = chart_lineplot.getOption();
     var start = line_option.dataZoom[0].startValue;
     var end = line_option.dataZoom[0].endValue;
-    var mid = (start+end)/2;
-    var mid_seconds = mid*0.623;
+    var mid = Math.floor((start+end)/2);
+    var mid_timestamp = x_ticks[mid].split(':')
+    var mid_seconds = Number(mid_timestamp[0])*60 + Number(mid_timestamp[1])
     console.log('Setting video position to ' + mid_seconds.toString() + ' s.');
-    video_player.currentTime = mid*0.623;
+    video_player.currentTime = mid_seconds;
     var new_x_width = end-start;
     // to prevent recalculation when scrolling we check whether zoom level changed by more than 2%
     if (Math.abs((new_x_width - x_width) / x_width) > 0.02) {
         x_width = new_x_width;
-        var emo_cal = re_calc_data(emo_data, start, end);
+
+        if (recalc) {
+          var emo_cal = re_calc_data(emo_data, start, end);
+        }
+        else {
+          var emo_cal = emo_data;
+        }
         for (var s=0; s<n_emo; s++){
             line_option.series[s].data = emo_cal[s];
         }

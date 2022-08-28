@@ -49,7 +49,7 @@
       var emo_data_loaded = [], av_data_loaded = [], loaded_data_len = 0;
 
       var rawFile = new XMLHttpRequest();
-      rawFile.open("GET", './vector_emotion_data.txt', false);
+      rawFile.open("GET", './vector_emotion_data_20000.txt', false);
       rawFile.onreadystatechange = function ()
       {
           if(rawFile.readyState === 4)
@@ -64,6 +64,9 @@
           }
       }
       rawFile.send(null);
+
+      av_data = av_data_loaded;
+      emo_vector_data = emo_data_loaded;
 
       var chart_heatmap = echarts.init(document.getElementById('heatmap'));
       chart_heatmap.setOption(option_heatmap);
